@@ -1,0 +1,24 @@
+.right_arrow {
+    float: right;
+    display :inline-block;
+    position: relative;
+    width: 6px;
+    height: 6px;
+    margin-right: 2px;
+}
+
+.right_arrow::after {
+    display: inline-block;
+    content: " ";
+    height: 6px;
+    width: 6px;
+    border-width: 1.5px 1.5px 0 0;
+    border-color: #C7C7CC;
+    border-style: solid;
+    -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+    -ms-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+    transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+    position: absolute;
+    left: -20px;
+    margin-top: 8px;
+}
