@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>earthLast</title>
+</head>
+
+<body>
+    <h1>Wireframe Sphere (WebGL - ThreeJS)</h1>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r76/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.min.js"></script>
+
+    <script>
+        //fields
+        var width;
+        var height;
+        // var scene;
+        var camera;
+        var renderer;
+        var sphere;
+        var particlesOuter;
+        var directionalLight
+        var xRot, yRot, zRot, triangles, radius, phis, phil, thes, thel; // sliders
+        function init() {
+            xRot = yRot = zRot = 0.001;
+            radius = phis = phil = thes = thel = 10;
+            innerRadius = 800;
+            outerRadius = 801;
+            phis = 180;
+            phil = 6.28;
+            thes = 0;
+            thel = 3.14;
+
+            triangles = 20;
+            //Set width
+            width = window.innerWidth;
+            //set Height
+            height = window.innerHeight * 0.6;
+            //Create Scene
+            scene = new THREE.Scene();
+            //Create Camera
+            camera = new THREE.PerspectiveCamera(60, width / height, 1, 3000);
+            camera.position.y = 700;
+            camera.position.z = 1000;
+            //Create Renderer
+            renderer = new THREE.WebGLRenderer({
+                antialias: true,
+                alpha: true
+            });
+            renderer.setClearColor('#000017', 1); // background
+
+            renderer.setSize(width, height);
+
+            //Add Renderer to webpage
+            document.body.appendChild(renderer.domElement);
+
+
+        };
+        var outerColor = 0x1B9CF8,
+            innerColor = 0xffffff
+        var innerSize = 801,
+            outerSize = 820;
+
+        var sphereWireframeOuter
+        var points
+
+        function createSphere() {
+
+            // Main element
+            sphereWireframeOuter = new THREE.Mesh(
+                new THREE.SphereGeometry(innerRadius, triangles, triangles, phis, phil, thes, thel),
+                new THREE.MeshBasicMaterial({
+                    color: outerColor,
+                    wireframe: true
+                })
+            );
+            scene.add(sphereWireframeOuter);
+
+            sphere = new THREE.Points(
+                new THREE.SphereGeometry(outerRadius, triangles, triangles, phis, phil, thes, thel),
+                new THREE.PointsMaterial({
+                    color: innerColor,
+                    // wireframe: true
+                    size: 4
+                })
+            );
+            scene.add(sphere);
+
+            // Light and shadow
+            // Create Sphere by passing to it the geometry w,h,d, number of polygons making up the face
+            // sphereWireframeInner = new THREE.Points(
+            //     new THREE.SphereGeometry(innerSize, 1000, 20, phis, phil, thes, thel),
+            //     new THREE.PointsMaterial({
+            //         color: innerColor, //The color chosen for the mesh
+            //         size: 2
+            //     }));
+            // scene.add(sphereWireframeInner);
+
+            var light = new THREE.AmbientLight(0x404040); // soft white light
+            scene.add(light);
+
+            // directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+            // directionalLight.position.set(0, 128, 128);
+            // scene.add(directionalLight);
+
+
+            points = new THREE.Points(
+                new THREE.SphereGeometry(outerSize, 100, 50, phis, phil, thes, thel),
+                new THREE.PointsMaterial({
+                    color: outerColor, //The color chosen for the mesh
+                }));
+            scene.add(points); //Add to scene
+            // var geometry = new THREE.Geometry();
+            // for (i = 0; i < 35000; i++) {
+
+            //     var x = -1 + Math.random() * 2;
+            //     var y = -1 + Math.random() * 2;
+            //     var z = -1 + Math.random() * 2;
+            //     var d = 1 / Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));
+            //     x *= d;
+            //     y *= d;
+            //     z *= d;
+
+            //     var vertex = new THREE.Vector3(
+            //         x * outerSize,
+            //         y * outerSize,
+            //         z * outerSize
+            //     );
+
+            //     geometry.vertices.push(vertex);
+
+            // }
+            // particlesOuter = new THREE.PointCloud(geometry, new THREE.PointCloudMaterial({
+            //     size: 0.1,
+            //     color: 0xffffff,
+            //     //map: THREE.ImageUtils.loadTexture( 'javascripts/particletextureshaded.png' ),
+            //     transparent: true,
+            // }));
+            // scene.add(particlesOuter);
+
+
+
+        };
+
+        var time = new THREE.Clock();
+
+        function render() {
+            sphere.rotation.y += 0.002;
+            points.rotation.y += 0.002;
+            sphereWireframeOuter.rotation.y += 0.002;
+            // sphereWireframeInner.rotation.y += 0.005;
+
+            // directionalLight.position.x = Math.cos(time.getElapsedTime() / 0.5) * 128;
+            // directionalLight.position.y = Math.cos(time.getElapsedTime() / 0.5) * 128;
+            // directionalLight.position.z = Math.sin(time.getElapsedTime() / 0.5) * 128;
+
+            renderer.render(scene, camera);
+            requestAnimationFrame(render);
+        }
+
+
+        $(function() {
+            init();
+            createSphere();
+            render();
+        });
+    </script>
+</body>
+
+</html>
